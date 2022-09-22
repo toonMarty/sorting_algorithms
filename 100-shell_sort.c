@@ -9,29 +9,35 @@
 
 void shell_sort(int *array, size_t size)
 {
-	size_t in, out;
-	size_t temp, h = 1;
+	size_t d[1000], k = 0, j = 0, i;
+	int n, j2;
 
-	while (h <= size / 3)
+	if (!array)
+		return;
+	while (j * 3 + 1 < size)
 	{
-		h = (h * 3) + 1;
+		d[k] = j * 3 + 1;
+		j = d[k++];
 	}
-
-	while (h > 0)
+	for (i = 0; i < k; i++)
 	{
-		for (out = h; out < size; out++)
+		for (j = 0; j < size; j++)
 		{
-			temp = array[out];
-			in = out;
+			if ((j + d[k - i - 1]) > size - 1)
+				break;
+			j2 = j;
 
-			while (in > (h - 1) && (size_t)(array[in - h]) >= temp)
+			while (array[j2] > array[j2 + d[k - i - 1]])
 			{
-				array[in] = array[in - h];
-				in = in - h;
+				n = array[j2];
+				array[j2] = array[j2 + d[k - i - 1]];
+				array[j2 + d[k - i - 1]] = n;
+				j2 = j2 - d[k - i - 1];
+
+				if (j2 < 0)
+					break;
 			}
-			array[in] = temp;
 		}
-		h = (h - 1) / 3;
 		print_array(array, size);
 	}
 }
